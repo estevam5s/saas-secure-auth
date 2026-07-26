@@ -21,6 +21,8 @@ cp -r saas-secure-auth ~/.claude/skills/
 
 Depois é só pedir ao Claude Code algo como *"proteja o login/registro desse SaaS contra bot com Turnstile e rate-limit Upstash, igual ao pytrack"* — a skill é acionada pela descrição.
 
+📋 **Prompts prontos de comando:** veja [`PROMPT.md`](PROMPT.md).
+
 ## O que você precisa ter em mãos
 - **Vercel token** (CLI).
 - **Upstash management API key** + e-mail da conta (cria o Redis por API).
@@ -30,6 +32,7 @@ Depois é só pedir ao Claude Code algo como *"proteja o login/registro desse Sa
 ## Conteúdo
 ```
 SKILL.md                              # instruções que o Claude Code segue
+PROMPT.md                             # prompts prontos de comando (copie e cole)
 README.md                             # este arquivo
 templates/
   turnstile.ts                        # helper verifyTurnstile (server-side)
