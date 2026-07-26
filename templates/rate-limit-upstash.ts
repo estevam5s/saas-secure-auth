@@ -6,10 +6,10 @@ import { Redis } from "@upstash/redis"
 const PREFIX = "linkium:rl:"
 const _url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL
 const _token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN
-let redis: Redis | null = null
-if (_url && _token) {
-  try { redis = new Redis({ url: _url, token: _token }) } catch { redis = null }
-}
+const redis: Redis | null = ((): Redis | null => {
+  if (!_url || !_token) return null
+  try { return new Redis({ url: _url, token: _token }) } catch { return null }
+})()
 
 // fallback em memória (best-effort por instância serverless)
 const hits = new Map<string, { count: number; start: number }>()
