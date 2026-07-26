@@ -1,0 +1,36 @@
+/* Trechos de referência para o WIDGET do Turnstile no front-end.
+   Adapte ao seu form. Só renderiza se a Site Key pública existir. */
+
+// (1) Carregar o script uma vez (dentro do componente client):
+import Script from "next/script";
+// ... no JSX, junto ao form:
+{process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+  <>
+    <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer strategy="afterInteractive" />
+    <div
+      className="cf-turnstile"
+      data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+      data-theme="auto"
+      data-language="pt-br"
+      data-size="flexible"
+    />
+  </>
+)}
+
+/* (2) SERVER ACTION / <form> nativo:
+   O widget injeta automaticamente o input hidden "cf-turnstile-response".
+   Na action, leia: formData.get("cf-turnstile-response") e passe ao verifyTurnstile. */
+
+/* (3) LOGIN CLIENT-SIDE (sem <form> action):
+   No submit, pegue o token e valide antes do signInWithPassword: */
+const token = (window as unknown as { turnstile?: { getResponse: () => string } }).turnstile?.getResponse?.();
+if (!token) { setError("Confirme que você não é um robô."); return; }
+// ... enviar { token } para POST /api/auth/turnstile e checar res.ok; depois:
+try { (window as unknown as { turnstile?: { reset: () => void } }).turnstile?.reset?.(); } catch {}
+
+/* (4) Componente de auth COMPARTILHADO (ex.: AuthExperience):
+   - adicione prop opcional  turnstileSiteKey?: string
+   - carregue o script num useEffect quando a prop existir
+   - renderize o <div class="cf-turnstile"> com key={mode} (re-render ao trocar login/registro)
+   - no submit: pegue window.turnstile.getResponse(), passe como 4º arg / no objeto
+   Assim é retrocompatível: SaaS que não passam a prop continuam sem Turnstile. */
