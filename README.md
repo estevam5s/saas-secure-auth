@@ -23,6 +23,8 @@ Depois é só pedir ao Claude Code algo como *"proteja o login/registro desse Sa
 
 📋 **Prompts prontos de comando:** veja [`PROMPT.md`](PROMPT.md).
 
+🌐 **Camada opcional de borda** (tela "Verificação de segurança" do Cloudflare + proteção DDoS): veja [`CLOUDFLARE-PROXY.md`](CLOUDFLARE-PROXY.md).
+
 ## O que você precisa ter em mãos
 - **Vercel token** (CLI).
 - **Upstash management API key** + e-mail da conta (cria o Redis por API).
@@ -32,6 +34,7 @@ Depois é só pedir ao Claude Code algo como *"proteja o login/registro desse Sa
 ## Conteúdo
 ```
 SKILL.md                              # instruções que o Claude Code segue
+CLOUDFLARE-PROXY.md                   # opcional: Cloudflare na frente do site (proxy + Managed Challenge)
 PROMPT.md                             # prompts prontos de comando (copie e cole)
 README.md                             # este arquivo
 templates/
@@ -42,6 +45,7 @@ templates/
 scripts/
   create-upstash-redis.sh             # cria/reaproveita o Redis via API e imprime URL+token
   setup-vercel-env.sh                 # seta as 4 env vars em production
+  setup-cloudflare-proxy.sh           # SSL + Managed Challenge numa zona Cloudflare
 ```
 
 ## Segurança
