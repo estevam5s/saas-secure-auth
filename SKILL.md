@@ -72,6 +72,7 @@ Setar TODAS em **production** ANTES do deploy (a `NEXT_PUBLIC_TURNSTILE_SITE_KEY
 - **Limite Hobby: 12 funções serverless/deploy** → se estourar, funda a nova rota numa função existente (ex.: dispatch por `?action=support` num `/api/track`).
 - **Limite Hobby: 100 deploys/dia** → deploys em excesso bloqueiam ("Resource is limited"); use retry com espera de ~25min, ou Vercel Pro.
 - **Supabase Auth CAPTCHA nativo** (`signInWithPassword({ options: { captchaToken } })`) só serve se você tiver acesso ao dashboard do Supabase pra ligar o CAPTCHA; se a conta estiver restrita, use a rota de verify server-side.
+- **TypeScript `implicitly has any`** → ao criar helpers no client (ex.: `checkTurnstile(token)`), tipe os parâmetros (`token?: string`). O build do Next faz type-check e falha com "Parameter implicitly has an 'any' type".
 - **fail-open vs fail-closed**: sem config → não bloqueia; configurado e token ausente/inválido → bloqueia; erro de rede na verificação → não bloqueia (não derruba usuário legítimo).
 
 ## Verificação final (browser)
